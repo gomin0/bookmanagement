@@ -25,6 +25,7 @@ public class BookService {
         return new BookResponse(savedBook);
     }
 
+    @Transactional(readOnly = true)
     public Page<BookResponse> getAllBooks(int page, int size, String sortBy, String direction) {
         if (!sortBy.equals("title") && !sortBy.equals("createdAt")) {
             throw new IllegalArgumentException("sortBy는 'title' 또는 'createdAt'만 가능합니다.");
@@ -38,6 +39,7 @@ public class BookService {
         return books.map(BookResponse::new);
     }
 
+    @Transactional(readOnly = true)
     public BookResponse getBookById(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + id));

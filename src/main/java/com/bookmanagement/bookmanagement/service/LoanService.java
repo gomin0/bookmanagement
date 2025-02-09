@@ -40,6 +40,7 @@ public class LoanService {
         return new LoanResponse(savedLoan);
     }
 
+    @Transactional(readOnly = true)
     public LoanStatusResponse getBookLoanStatus(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + bookId));
