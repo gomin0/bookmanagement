@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
     // 400 俊矾: 肋给等 夸没 贸府 (IllegalArgumentException, IllegalStateException)
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
-    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException ex) {
+    public ResponseEntity<Map<String, Object>> handleBadRequestExceptions(RuntimeException ex) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Bad Request", ex.getMessage());
     }
 
