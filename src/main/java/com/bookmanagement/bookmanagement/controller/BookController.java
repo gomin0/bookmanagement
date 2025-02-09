@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
@@ -53,5 +55,13 @@ public class BookController {
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // 도서 검색 API
+    @GetMapping("/search")
+    public ResponseEntity<List<BookResponse>> searchBooks(
+            @RequestParam String type,  // title or author
+            @RequestParam String keyword) {
+        return ResponseEntity.ok(bookService.searchBooks(type, keyword));
     }
 }
