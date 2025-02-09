@@ -47,4 +47,15 @@ public class LoanService {
 
         return new LoanStatusResponse(!book.isAvailable());
     }
+
+    public void returnBook(Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + bookId));
+
+        if (book.isAvailable()) {
+            throw new IllegalStateException("이 도서는 현재 대출되지 않았습니다.");
+        }
+
+        book.setAvailable(true);
+    }
 }

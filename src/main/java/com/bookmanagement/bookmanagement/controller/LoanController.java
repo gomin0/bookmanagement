@@ -27,4 +27,11 @@ public class LoanController {
     public ResponseEntity<LoanStatusResponse> getBookLoanStatus(@PathVariable Long bookId) {
         return ResponseEntity.ok(loanService.getBookLoanStatus(bookId));
     }
+
+    // µµ¼­ ¹Ý³³ API
+    @PostMapping("/{bookId}/return")
+    public ResponseEntity<Void> returnBook(@PathVariable Long bookId) {
+        loanService.returnBook(bookId);
+        return ResponseEntity.ok().build();
+    }
 }
