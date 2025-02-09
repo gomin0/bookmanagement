@@ -62,3 +62,5 @@ out/
 ### VS Code ###
 .vscode/
 >>>>>>> d4d0ebc (Initial commit: 프로젝트 초기 설정)
+
+/src/main/resources/application.yml
