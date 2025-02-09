@@ -39,4 +39,8 @@ public class Book {
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
 }
