@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: 온라인 도서 관리 시스템 API
+  description: 도서 등록, 조회, 대출 관리 REST API
+  version: 1.0.0
+paths:
+  /api/books:
+    get:
+      summary: 모든 도서 조회
+      responses:
+        200:
+          description: 성공
+    post:
+      summary: 새로운 도서 등록
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+      responses:
+        201:
+          description: 도서 등록 성공
+  /api/books/{id}:
+    get:
+      summary: 특정 도서 조회
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 성공
+    put:
+      summary: 특정 도서 수정
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+      responses:
+        200:
+          description: 수정 성공
+    delete:
+      summary: 특정 도서 삭제
+      responses:
+        204:
+          description: 삭제 성공
+
+  /api/users:
+    get:
+      summary: 모든 사용자 조회
+      responses:
+        200:
+          description: 성공
+    post:
+      summary: 새로운 사용자 등록
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        201:
+          description: 사용자 등록 성공
+
+  /api/users/{id}:
+    get:
+      summary: 특정 사용자 조회
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 성공
+
+  /api/loans:
+    post:
+      summary: 도서 대출
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanRequest'
+      responses:
+        201:
+          description: 대출 성공
+
+  /api/loans/{bookId}:
+    get:
+      summary: 특정 도서의 대출 상태 확인
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 대출 상태 확인 성공
+
+  /api/loans/{bookId}/return:
+    post:
+      summary: 도서 반납
+      responses:
+        200:
+          description: 반납 성공
+
+components:
+  schemas:
+    BookRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+    UserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    LoanRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+        bookId:
+          type: integer
