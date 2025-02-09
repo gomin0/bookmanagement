@@ -2,14 +2,12 @@ package com.bookmanagement.bookmanagement.controller;
 
 import com.bookmanagement.bookmanagement.dto.loan.LoanRequest;
 import com.bookmanagement.bookmanagement.dto.loan.LoanResponse;
+import com.bookmanagement.bookmanagement.dto.loan.LoanStatusResponse;
 import com.bookmanagement.bookmanagement.service.LoanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/loans")
@@ -22,5 +20,11 @@ public class LoanController {
     @PostMapping
     public ResponseEntity<LoanResponse> loanBook(@RequestBody @Valid LoanRequest request) {
         return ResponseEntity.ok(loanService.loanBook(request));
+    }
+
+    // 대출 상태 확인 API
+    @GetMapping("/{bookId}")
+    public ResponseEntity<LoanStatusResponse> getBookLoanStatus(@PathVariable Long bookId) {
+        return ResponseEntity.ok(loanService.getBookLoanStatus(bookId));
     }
 }

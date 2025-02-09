@@ -2,6 +2,7 @@ package com.bookmanagement.bookmanagement.service;
 
 import com.bookmanagement.bookmanagement.dto.loan.LoanRequest;
 import com.bookmanagement.bookmanagement.dto.loan.LoanResponse;
+import com.bookmanagement.bookmanagement.dto.loan.LoanStatusResponse;
 import com.bookmanagement.bookmanagement.entity.Book;
 import com.bookmanagement.bookmanagement.entity.Loan;
 import com.bookmanagement.bookmanagement.entity.User;
@@ -12,8 +13,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -39,5 +38,12 @@ public class LoanService {
 
         Loan savedLoan = loanRepository.save(loan);
         return new LoanResponse(savedLoan);
+    }
+
+    public LoanStatusResponse getBookLoanStatus(Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + bookId));
+
+        return new LoanStatusResponse(!book.isAvailable());
     }
 }
