@@ -18,4 +18,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "(LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) AND :type = 'title') OR " +
             "(LOWER(b.author) LIKE LOWER(CONCAT('%', :keyword, '%')) AND :type = 'author')")
     List<Book> searchBooks(@Param("type") String type, @Param("keyword") String keyword);
+
+    @Query("SELECT b FROM Book b JOIN b.tags t WHERE t IN :tags GROUP BY b HAVING COUNT(t) = :tagCount")
+    List<Book> filterByTags(@Param("tags") List<String> tags, @Param("tagCount") long tagCount);
 }

@@ -3,6 +3,8 @@ package com.bookmanagement.bookmanagement.dto.book;
 import com.bookmanagement.bookmanagement.entity.Book;
 import lombok.Getter;
 
+import java.util.Set;
+
 @Getter
 public class BookResponse {
     private Long id;
@@ -10,6 +12,7 @@ public class BookResponse {
     private String title;
     private String author;
     private boolean available;
+    private Set<String> tags;
 
     public BookResponse(Book book) {
         this.id = book.getId();
@@ -17,5 +20,6 @@ public class BookResponse {
         this.title = book.getTitle();
         this.author = book.getAuthor();
         this.available = book.isAvailable();
+        this.tags = book.getTags();
     }
 }

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Getter
 @NoArgsConstructor
 public class BookRequest {
@@ -20,11 +22,14 @@ public class BookRequest {
     @NotBlank(message = "저자는 필수 입력 항목입니다.")
     private String author;
 
+    private Set<String> tags;
+
     @Builder
-    public BookRequest(String isbn, String title, String author) {
+    public BookRequest(String isbn, String title, String author, Set<String> tags) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
+        this.tags = tags;
     }
 
     public Book toEntity() {
@@ -33,6 +38,7 @@ public class BookRequest {
                 .title(this.title)
                 .author(this.author)
                 .available(true)
+                .tags(this.tags)
                 .build();
     }
 }

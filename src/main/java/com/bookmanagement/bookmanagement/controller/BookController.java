@@ -64,4 +64,10 @@ public class BookController {
             @RequestParam String keyword) {
         return ResponseEntity.ok(bookService.searchBooks(type, keyword));
     }
+
+    // 태그 기반 필터링 API
+    @GetMapping("/filter")
+    public ResponseEntity<List<BookResponse>> filterBooksByTags(@RequestParam List<String> tags) {
+        return ResponseEntity.ok(bookService.filterBooksByTags(tags));
+    }
 }
