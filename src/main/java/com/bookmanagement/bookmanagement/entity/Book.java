@@ -29,6 +29,12 @@ public class Book {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    public void update(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
