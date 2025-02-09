@@ -5,6 +5,7 @@ import com.bookmanagement.bookmanagement.dto.book.BookResponse;
 import com.bookmanagement.bookmanagement.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,13 @@ public class BookController {
 
     // 모든 도서 조회 API
     @GetMapping
-    public ResponseEntity<List<BookResponse>> getAllBooks() {
-        return ResponseEntity.ok(bookService.getAllBooks());
+    public ResponseEntity<Page<BookResponse>> getAllBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "title") String sortBy,  // 기본값: title
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return ResponseEntity.ok(bookService.getAllBooks(page, size, sortBy, direction));
     }
 
     // 특정 도서 조회 API

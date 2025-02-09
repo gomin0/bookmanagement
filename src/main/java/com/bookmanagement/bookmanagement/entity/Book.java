@@ -3,6 +3,8 @@ package com.bookmanagement.bookmanagement.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -23,4 +25,12 @@ public class Book {
     private String author;
 
     private boolean available = true;  // 대출 가능 여부
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

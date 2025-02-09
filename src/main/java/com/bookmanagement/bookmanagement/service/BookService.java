@@ -6,6 +6,10 @@ import com.bookmanagement.bookmanagement.entity.Book;
 import com.bookmanagement.bookmanagement.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +28,17 @@ public class BookService {
         return new BookResponse(savedBook);
     }
 
-    public List<BookResponse> getAllBooks() {
-        return bookRepository.findAll().stream()
-                .map(BookResponse::new)
-                .collect(Collectors.toList());
+    public Page<BookResponse> getAllBooks(int page, int size, String sortBy, String direction) {
+        if (!sortBy.equals("title") && !sortBy.equals("createdAt")) {
+            throw new IllegalArgumentException("sortBy는 'title' 또는 'createdAt'만 가능합니다.");
+        }
+
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Book> books = bookRepository.findAll(pageable);
+
+        return books.map(BookResponse::new);
     }
 
     public BookResponse getBookById(Long id) {
