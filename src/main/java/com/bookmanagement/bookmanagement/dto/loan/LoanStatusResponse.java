@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class LoanStatusResponse {
-    private boolean loaned;
+    private boolean available;
     private String message;
 
-    public LoanStatusResponse(boolean loaned) {
-        this.loaned = loaned;
-        this.message = loaned ? "대출 중" : "대출 가능";
+    public LoanStatusResponse(boolean available) {
+        this.available = available;
+        this.message = available ? "대출 가능" : "대출 중";
     }
 }

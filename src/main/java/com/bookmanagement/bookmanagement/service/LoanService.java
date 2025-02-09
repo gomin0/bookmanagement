@@ -45,7 +45,7 @@ public class LoanService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + bookId));
 
-        return new LoanStatusResponse(!book.isAvailable());
+        return new LoanStatusResponse(book.isAvailable());
     }
 
     public void returnBook(Long bookId) {
