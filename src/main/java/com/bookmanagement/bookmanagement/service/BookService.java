@@ -13,6 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -51,6 +54,7 @@ public class BookService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + id));
 
         book.update(request.getIsbn(), request.getTitle(), request.getAuthor());
+        book.updateTags(request.getTags());
 
         return new BookResponse(book);
     }
@@ -60,5 +64,23 @@ public class BookService {
             throw new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + id);
         }
         bookRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookResponse> searchBooks(String type, String keyword) {
+        if (!type.equals("title") && !type.equals("author")) {
+            throw new IllegalArgumentException("검색 타입은 'title' 또는 'author'만 가능합니다.");
+        }
+
+        List<Book> books = bookRepository.searchBooks(type, keyword);
+        return books.stream().map(BookResponse::new).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookResponse> filterBooksByTags(List<String> tags) {
+        List<Book> books = bookRepository.filterByTags(tags, tags.size());
+        return books.stream()
+                .map(BookResponse::new)
+                .collect(Collectors.toList());
     }
 }

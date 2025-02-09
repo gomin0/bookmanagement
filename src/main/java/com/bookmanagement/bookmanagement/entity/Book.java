@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,6 +28,11 @@ public class Book {
 
     private boolean available = true;  // 대출 가능 여부
 
+    @ElementCollection
+    @CollectionTable(name = "book_tags", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "tag")
+    private Set<String> tags = new HashSet<>(); // 태그 기본값 설정;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -33,6 +40,18 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
+    }
+
+    public void updateTags(Set<String> newTags) {
+        if (newTags == null) {
+            newTags = new HashSet<>();
+        }
+
+        // 기존 태그와 새로운 태그를 비교 (순서 무시) -> 다른 경우에만 업데이트
+        if (!this.tags.equals(newTags)) {
+            this.tags.clear();
+            this.tags.addAll(newTags);
+        }
     }
 
     @PrePersist
