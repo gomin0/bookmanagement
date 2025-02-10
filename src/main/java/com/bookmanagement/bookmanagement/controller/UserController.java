@@ -1,5 +1,7 @@
 package com.bookmanagement.bookmanagement.controller;
 
+import com.bookmanagement.bookmanagement.dto.user.LoginRequest;
+import com.bookmanagement.bookmanagement.dto.user.LoginResponse;
 import com.bookmanagement.bookmanagement.dto.user.UserRequest;
 import com.bookmanagement.bookmanagement.dto.user.UserResponse;
 import com.bookmanagement.bookmanagement.service.UserService;
@@ -35,5 +37,11 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    // ·Î±×ÀÎ API
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
+        return ResponseEntity.ok(userService.login(request));
     }
 }

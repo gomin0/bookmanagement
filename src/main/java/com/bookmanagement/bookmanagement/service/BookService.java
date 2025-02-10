@@ -4,6 +4,7 @@ import com.bookmanagement.bookmanagement.dto.book.BookRequest;
 import com.bookmanagement.bookmanagement.dto.book.BookResponse;
 import com.bookmanagement.bookmanagement.entity.Book;
 import com.bookmanagement.bookmanagement.repository.BookRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,10 @@ public class BookService {
     private final BookRepository bookRepository;
 
     public BookResponse addBook(BookRequest request) {
+        if (bookRepository.existsByIsbn(request.getIsbn())) {
+            throw new EntityExistsException("이미 존재하는 ISBN입니다: " + request.getIsbn());
+        }
+
         Book book = request.toEntity();
         Book savedBook = bookRepository.save(book);
         return new BookResponse(savedBook);
@@ -52,6 +57,10 @@ public class BookService {
     public BookResponse updateBook(Long id, BookRequest request) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + id));
+
+        if (bookRepository.existsByIsbnAndIdNot(request.getIsbn(), id)) {
+            throw new EntityExistsException("이미 존재하는 ISBN입니다: " + request.getIsbn());
+        }
 
         book.update(request.getIsbn(), request.getTitle(), request.getAuthor());
         book.updateTags(request.getTags());
