@@ -11,6 +11,8 @@ import com.bookmanagement.bookmanagement.repository.LoanRepository;
 import com.bookmanagement.bookmanagement.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,8 @@ public class LoanService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
 
+    // 도서 대출 (대출 상태 캐시 무효화)
+    @CacheEvict(value = "loanStatus", key = "#request.bookId")
     public LoanResponse loanBook(LoanRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + request.getUserId()));
@@ -40,7 +44,9 @@ public class LoanService {
         return new LoanResponse(savedLoan);
     }
 
+    // 도서 대출 상태 조회 (캐싱 적용)
     @Transactional(readOnly = true)
+    @Cacheable(value = "loanStatus", key = "#bookId")
     public LoanStatusResponse getBookLoanStatus(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + bookId));
@@ -48,6 +54,8 @@ public class LoanService {
         return new LoanStatusResponse(book.isAvailable());
     }
 
+    // 도서 반납 (대출 상태 캐시 무효화)
+    @CacheEvict(value = "loanStatus", key = "#bookId")
     public void returnBook(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 도서를 찾을 수 없습니다: " + bookId));
