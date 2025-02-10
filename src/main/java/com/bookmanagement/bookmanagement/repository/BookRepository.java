@@ -14,6 +14,10 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findAll(Pageable pageable);
 
+    boolean existsByIsbn(String isbn);
+
+    boolean existsByIsbnAndIdNot(String isbn, Long id);
+
     @Query("SELECT b FROM Book b WHERE " +
             "(LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) AND :type = 'title') OR " +
             "(LOWER(b.author) LIKE LOWER(CONCAT('%', :keyword, '%')) AND :type = 'author')")
