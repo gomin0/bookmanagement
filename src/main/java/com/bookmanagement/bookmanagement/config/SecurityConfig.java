@@ -48,16 +48,17 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                        .requestMatchers(
-                                "/swagger-ui/**", "/v3/api-docs/**", "/api/users/login"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/api/books/**",
-                                "/api/loans/**",
-                                "/api/users/**"
-                        ).authenticated()
-                        .anyRequest().authenticated()
+//                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+//                        .requestMatchers(
+//                                "/swagger-ui/**", "/v3/api-docs/**", "/api/users/login"
+//                        ).permitAll()
+//                        .requestMatchers(
+//                                "/api/books/**",
+//                                "/api/loans/**",
+//                                "/api/users/**"
+//                        ).authenticated()
+//                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
