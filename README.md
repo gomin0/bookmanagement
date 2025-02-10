@@ -5,27 +5,15 @@
 - 사용자 관리 (등록, 조회)
 - 대출 관리 (대출, 상태, 반납)
 
-## 2. API 명세
+## 2. 기술 스택
+- Backend: Java 17, Spring Boot 3.4
+- Database: MySQL
+- Security: Spring Security, JWT
+- API Documentation: Swagger (Springdoc OpenAPI)
+- Build Tool: Gradle
 
-### ? 2.1. 도서 관리 API
-| 기능 | Method | Endpoint | 설명 |
-|------|--------|----------|------|
-| 도서 등록 | `POST` | `/api/books` | 새로운 도서를 추가 |
-| 도서 목록 조회 | `GET` | `/api/books` | 등록된 모든 도서 조회 |
-| 도서 조회 (ID) | `GET` | `/api/books/{id}` | 특정 ID의 도서 조회 |
-| 도서 수정 | `PUT` | `/api/books/{id}` | 특정 도서 정보 수정 |
-| 도서 삭제 | `DELETE` | `/api/books/{id}` | 특정 도서 삭제 |
-
-### ? 2.2. 사용자 관리 API
-| 기능 | Method | Endpoint | 설명 |
-|------|--------|----------|------|
-| 사용자 등록 | `POST` | `/api/users` | 새로운 사용자 추가 |
-| 사용자 목록 조회 | `GET` | `/api/users` | 모든 사용자 조회 |
-| 사용자 조회 (ID) | `GET` | `/api/users/{id}` | 특정 ID의 사용자 조회 |
-
-### ? 2.3. 대출 및 반납 API
-| 기능 | Method | Endpoint | 설명 |
-|------|--------|----------|------|
-| 도서 대출 | `POST` | `/api/loans` | 사용자가 도서를 대출 |
-| 대출 상태 확인 | `GET` | `/api/loans/{bookId}` | 해당 도서가 대출 중인지 확인 |
-| 도서 반납 | `POST` | `/api/loans/{bookId}/return` | 대출된 도서를 반납 |
+## 3. 프로젝트 실행 방법
+- API 문서(Swagger) 접속
+  - http://localhost:8080/swagger-ui/index.html
+- API 사용을 위해 사용자는 먼저 사용자 등록 후 로그인을 해야 합니다.
+- 로그인 후 반환된 토큰을 Authorization 헤더에 Bearer token 형식으로 추가하여 요청해야 합니다.
