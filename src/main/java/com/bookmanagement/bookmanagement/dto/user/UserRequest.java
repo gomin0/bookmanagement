@@ -17,16 +17,21 @@ public class UserRequest {
     @Email(message = "유효한 이메일 형식이어야 합니다.")
     private String email;
 
+    @NotBlank(message = "비밀번호를 입력하세요.")
+    private String password;
+
     @Builder
-    public UserRequest(String name, String email) {
+    public UserRequest(String name, String email, String password) {
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 
-    public User toEntity() {
+    public User toEntity(String encodedPassword) {
         return User.builder()
                 .name(this.name)
                 .email(this.email)
+                .password(encodedPassword)
                 .build();
     }
 }
